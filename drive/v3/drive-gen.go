@@ -7,22 +7,23 @@
 //   import "google.golang.org/api/drive/v3"
 //   ...
 //   driveService, err := drive.New(oauthHttpClient)
-package drive // import "google.golang.org/api/drive/v3"
+package drive // import "github.com/timehop/google-api-go-client/drive/v3"
 
 import (
 	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
-	context "golang.org/x/net/context"
-	ctxhttp "golang.org/x/net/context/ctxhttp"
-	gensupport "google.golang.org/api/gensupport"
-	googleapi "google.golang.org/api/googleapi"
 	"io"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	context "golang.org/x/net/context"
+	ctxhttp "golang.org/x/net/context/ctxhttp"
+	gensupport "google.golang.org/api/gensupport"
+	googleapi "google.golang.org/api/googleapi"
 )
 
 // Always reference these packages, just in case the auto-generated code
@@ -3663,6 +3664,7 @@ type FilesGetCall struct {
 	fileId       string
 	urlParams_   gensupport.URLParams
 	ifNoneMatch_ string
+	rnge         string
 	ctx_         context.Context
 }
 
@@ -3700,6 +3702,12 @@ func (c *FilesGetCall) IfNoneMatch(entityTag string) *FilesGetCall {
 	return c
 }
 
+// Range sets the range header on the request
+func (c *FilesGetCall) Range(rnge string) *FilesGetCall {
+	c.rnge = rnge
+	return c
+}
+
 // Context sets the context to be used in this call's Do and Download
 // methods. Any pending HTTP request will be aborted if the provided
 // context is canceled.
@@ -3713,6 +3721,9 @@ func (c *FilesGetCall) doRequest(alt string) (*http.Response, error) {
 	reqHeaders.Set("User-Agent", c.s.userAgent())
 	if c.ifNoneMatch_ != "" {
 		reqHeaders.Set("If-None-Match", c.ifNoneMatch_)
+	}
+	if c.rnge != "" {
+		reqHeaders.Set("Range", c.rnge)
 	}
 	var body io.Reader = nil
 	c.urlParams_.Set("alt", alt)
